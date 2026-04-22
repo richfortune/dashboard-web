@@ -9,7 +9,7 @@ function AppShell({ children }: Props) {
         <div
             style={{
                 minHeight: "100vh",
-                padding: "16px 12px",
+                padding: "24px 16px",
             }}
         >
             <div className="app-layout">
