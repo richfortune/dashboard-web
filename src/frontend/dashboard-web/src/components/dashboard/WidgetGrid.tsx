@@ -4,62 +4,38 @@ import { useBitcoinPrice } from "../../hooks/useBitcoinPrice";
 import { useRomeWeather } from "../../hooks/useRomeWeather";
 
 function WidgetGrid() {
-    const { price, loading: bitcoinLoading, error: bitcoinError } = useBitcoinPrice();
+    const { price, loading: bitcoinLoading, error: bitcoinError, lastUpdated: bitcoinUpdated } = useBitcoinPrice();
 
     const {
         temperature,
         description,
         loading: weatherLoading,
         error: weatherError,
+        lastUpdated: weatherUpdated
     } = useRomeWeather();
 
     return (
         <section>
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "18px",
-                    gap: "12px",
-                    flexWrap: "wrap",
-                }}
-            >
+            <div className="dashboard-header">
                 <div>
-                    <h2
-                        style={{
-                            fontSize: "1.5rem",
-                            color: "#0f172a",
-                            marginBottom: "4px",
-                        }}
-                    >
-                        Overview
-                    </h2>
-                    <p
-                        style={{
-                            color: "#64748b",
-                            fontSize: "0.95rem",
-                        }}
-                    >
+                    <h2 className="dashboard-title">Overview</h2>
+                    <p className="dashboard-subtitle">
                         Your most relevant daily widgets in one place.
                     </p>
                 </div>
             </div>
 
-            <div
-                style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-                    gap: "20px",
-                }}
-            >
+            <div className="dashboard-grid">
                 {widgets.map((widget) => {
                     if (widget.title === "Bitcoin") {
                         return (
                             <DashboardCard
                                 key={widget.id}
                                 title="Bitcoin"
-                                value={bitcoinLoading ? "Loading..." : bitcoinError ? "Error" : price}
+                                value={price}
+                                isLoading={bitcoinLoading}
+                                isError={!!bitcoinError}
+                                lastUpdated={bitcoinUpdated}
                                 backgroundColor={widget.backgroundColor}
                             />
                         );
@@ -70,9 +46,7 @@ function WidgetGrid() {
                             <DashboardCard
                                 key={widget.id}
                                 title="Weather"
-                                value={
-                                    weatherLoading ? "Loading..." : weatherError ? "Error" : temperature
-                                }
+                                value={temperature}
                                 subtitle={
                                     weatherLoading
                                         ? "Fetching Rome weather..."
@@ -80,6 +54,9 @@ function WidgetGrid() {
                                             ? "Unable to load weather"
                                             : description
                                 }
+                                isLoading={weatherLoading}
+                                isError={!!weatherError}
+                                lastUpdated={weatherUpdated}
                                 backgroundColor={widget.backgroundColor}
                             />
                         );

@@ -4,12 +4,14 @@ type BitcoinState = {
     price: string;
     loading: boolean;
     error: string | null;
+    lastUpdated: string | null;
 };
 
 export function useBitcoinPrice(): BitcoinState {
     const [price, setPrice] = useState<string>("--");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
     useEffect(() => {
         async function fetchBitcoin() {
@@ -23,6 +25,7 @@ export function useBitcoinPrice(): BitcoinState {
                 const data = await response.json();
 
                 setPrice(`$${Number(data.data.amount).toLocaleString()}`);
+                setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
                 setError(null);
             } catch (err) {
                 setError("Errore nel recupero dati");
@@ -34,5 +37,5 @@ export function useBitcoinPrice(): BitcoinState {
         fetchBitcoin();
     }, []);
 
-    return { price, loading, error };
+    return { price, loading, error, lastUpdated };
 }

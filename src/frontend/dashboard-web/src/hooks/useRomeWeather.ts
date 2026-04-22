@@ -5,6 +5,7 @@ type RomeWeatherState = {
     description: string;
     loading: boolean;
     error: string | null;
+    lastUpdated: string | null;
 };
 
 function getWeatherDescription(code: number): string {
@@ -46,6 +47,7 @@ export function useRomeWeather(): RomeWeatherState {
     const [description, setDescription] = useState<string>("--");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [lastUpdated, setLastUpdated] = useState<string | null>(null);
 
     useEffect(() => {
         async function fetchWeather() {
@@ -75,6 +77,7 @@ export function useRomeWeather(): RomeWeatherState {
                         : "Weather unavailable"
                 );
 
+                setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
                 setError(null);
             } catch (err) {
                 setError("Errore nel recupero meteo");
@@ -86,5 +89,5 @@ export function useRomeWeather(): RomeWeatherState {
         fetchWeather();
     }, []);
 
-    return { temperature, description, loading, error };
+    return { temperature, description, loading, error, lastUpdated };
 }
