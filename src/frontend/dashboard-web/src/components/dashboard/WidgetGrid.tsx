@@ -1,7 +1,18 @@
 import DashboardCard from "./DashboardCard";
 import { widgets } from "../../data/mockWidgets";
+import { useBitcoinPrice } from "../../hooks/useBitcoinPrice";
+import { useRomeWeather } from "../../hooks/useRomeWeather";
 
 function WidgetGrid() {
+    const { price, loading: bitcoinLoading, error: bitcoinError } = useBitcoinPrice();
+
+    const {
+        temperature,
+        description,
+        loading: weatherLoading,
+        error: weatherError,
+    } = useRomeWeather();
+
     return (
         <section>
             <div
@@ -42,14 +53,47 @@ function WidgetGrid() {
                     gap: "20px",
                 }}
             >
-                {widgets.map((widget) => (
-                    <DashboardCard
-                        key={widget.id}
-                        title={widget.title}
-                        value={widget.value}
-                        backgroundColor={widget.backgroundColor}
-                    />
-                ))}
+                {widgets.map((widget) => {
+                    if (widget.title === "Bitcoin") {
+                        return (
+                            <DashboardCard
+                                key={widget.id}
+                                title="Bitcoin"
+                                value={bitcoinLoading ? "Loading..." : bitcoinError ? "Error" : price}
+                                backgroundColor={widget.backgroundColor}
+                            />
+                        );
+                    }
+
+                    if (widget.title === "Weather") {
+                        return (
+                            <DashboardCard
+                                key={widget.id}
+                                title="Weather"
+                                value={
+                                    weatherLoading ? "Loading..." : weatherError ? "Error" : temperature
+                                }
+                                subtitle={
+                                    weatherLoading
+                                        ? "Fetching Rome weather..."
+                                        : weatherError
+                                            ? "Unable to load weather"
+                                            : description
+                                }
+                                backgroundColor={widget.backgroundColor}
+                            />
+                        );
+                    }
+
+                    return (
+                        <DashboardCard
+                            key={widget.id}
+                            title={widget.title}
+                            value={widget.value}
+                            backgroundColor={widget.backgroundColor}
+                        />
+                    );
+                })}
             </div>
         </section>
     );

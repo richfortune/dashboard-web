@@ -1,10 +1,16 @@
 type Props = {
     title: string;
     value: string;
+    subtitle?: string;
     backgroundColor?: string;
 };
 
-function DashboardCard({ title, value, backgroundColor = "#ffffff" }: Props) {
+function DashboardCard({
+    title,
+    value,
+    subtitle,
+    backgroundColor = "#ffffff",
+}: Props) {
     return (
         <article
             style={{
@@ -42,6 +48,18 @@ function DashboardCard({ title, value, backgroundColor = "#ffffff" }: Props) {
                 >
                     {value}
                 </h3>
+
+                {subtitle && (
+                    <p
+                        style={{
+                            marginTop: "8px",
+                            fontSize: "0.95rem",
+                            color: "#64748b",
+                        }}
+                    >
+                        {subtitle}
+                    </p>
+                )}
             </div>
 
             <p
