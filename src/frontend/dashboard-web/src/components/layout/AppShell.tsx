@@ -9,32 +9,14 @@ function AppShell({ children }: Props) {
         <div
             style={{
                 minHeight: "100vh",
-                padding: "24px 16px",
+                padding: "16px 12px",
             }}
         >
-            <div
-                style={{
-                    maxWidth: "1280px",
-                    margin: "0 auto",
-                    display: "grid",
-                    gridTemplateColumns: "240px 1fr",
-                    gap: "24px",
-                    alignItems: "start",
-                }}
-            >
+            <div className="app-layout">
                 <Sidebar />
 
                 <div>
-                    <header
-                        style={{
-                            background: "linear-gradient(135deg, #b7d7d2 0%, #7db8b0 100%)",
-                            color: "#0f172a",
-                            borderRadius: "24px",
-                            padding: "32px",
-                            boxShadow: "0 10px 30px rgba(15, 23, 42, 0.10)",
-                            marginBottom: "24px",
-                        }}
-                    >
+                    <header className="app-header">
                         <p
                             style={{
                                 fontSize: "14px",
